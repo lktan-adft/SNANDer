@@ -160,10 +160,9 @@ static int snor_wait_ready(int sleep_ms)
 /*
  * read status register
  */
-static int snor_read_rg(u8 code, u8 *val)
+int snor_read_rg(u8 code, u8 *val)
 {
 	int retval;
-
 	SPI_CONTROLLER_Chip_Select_Low();
 	SPI_CONTROLLER_Write_One_Byte(code);
 	retval = SPI_CONTROLLER_Read_NByte(val, 1, SPI_CONTROLLER_SPEED_SINGLE);
@@ -193,6 +192,13 @@ static int snor_write_rg(u8 code, u8 *val)
 	}
 
 	return 0;
+}
+
+int snor_write_rg_external(u8 code, u8 *val)
+{
+	snor_write_enable();
+	snor_write_rg(code, val);
+	snor_write_disable();
 }
 
 static int snor_4byte_mode(int enable)

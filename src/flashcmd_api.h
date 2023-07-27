@@ -27,6 +27,8 @@ struct flash_cmd {
 	int (*flash_read)(unsigned char *buf, unsigned long from, unsigned long len);
 	int (*flash_erase)(unsigned long offs, unsigned long len);
 	int (*flash_write)(unsigned char *buf, unsigned long to, unsigned long len);
+	int (*flash_reg_read)(unsigned char code, unsigned char *val);
+	int (*flash_reg_write)(unsigned char code, unsigned char *val);
 };
 
 long flash_cmd_init(struct flash_cmd *cmd);

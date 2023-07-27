@@ -18,6 +18,8 @@
 int snor_read(unsigned char *buf, unsigned long from, unsigned long len);
 int snor_erase(unsigned long offs, unsigned long len);
 int snor_write(unsigned char *buf, unsigned long to, unsigned long len);
+int snor_read_rg(unsigned char code, unsigned char *val);
+int snor_write_rg_external(unsigned char code, unsigned char *val);
 long snor_init(void);
 void support_snor_list(void);
 
