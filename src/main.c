@@ -97,9 +97,9 @@ int main(int argc, char* argv[])
 	title();
 
 #ifdef EEPROM_SUPPORT
-	while ((c = getopt(argc, argv, "diIhveLkl:a:w:r:o:s:E:f:8qQ")) != -1)
+	while ((c = getopt(argc, argv, "diIhveLkl:a:w:r:o:s:E:f:8qQ3")) != -1)
 #else
-	while ((c = getopt(argc, argv, "diIhveLkl:a:w:r:o:s:qQ")) != -1)
+	while ((c = getopt(argc, argv, "diIhveLkl:a:w:r:o:s:qQ3")) != -1)
 #endif
 	{
 		switch(c)
@@ -188,6 +188,7 @@ int main(int argc, char* argv[])
 			case 'e':
 			case 'q':
 			case 'Q':
+			case '3':
 				if(!op)
 					op = c;
 				else
@@ -224,7 +225,34 @@ int main(int argc, char* argv[])
 
 	if((flen = flash_cmd_init(&prog)) <= 0)
 		goto out;
+	
+	if (op == '3')
+	{
+		unsigned char val;
+		ret = prog.flash_reg_read(0x05, &val);
+		printf("done 0x05 reg read %02x\n", ret);
+		printf("read reg %02x\n", val);
+		ret = prog.flash_reg_read(0x35, &val);
+		printf("done 0x35 reg read %02x\n", ret);
+		printf("read reg %02x\n", val);
+		ret = prog.flash_reg_read(0x15, &val);
+		printf("done 0x15 reg read %02x\n", ret);
+		printf("read reg %02x\n", val);
 
+		printf("write power up address mode\n");
+		val = (0x00<<1);
+		ret = prog.flash_reg_write(0x11, &val);
+
+		ret = prog.flash_reg_read(0x05, &val);
+		printf("done 0x05 reg read %02x\n", ret);
+		printf("read reg %02x\n", val);
+		ret = prog.flash_reg_read(0x35, &val);
+		printf("done 0x35 reg read %02x\n", ret);
+		printf("read reg %02x\n", val);
+		ret = prog.flash_reg_read(0x15, &val);
+		printf("done 0x15 reg read %02x\n", ret);
+		printf("read reg %02x\n", val);		
+	}
 	if (op == 'q')
 	{
 		unsigned char val;
